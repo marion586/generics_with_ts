@@ -1,0 +1,2 @@
+https://dev.to/codewithahsan/the-complete-typescript-setup-from-zero-to-hero-398h
+https://www.freecodecamp.org/news/how-typescript-generics-work/
