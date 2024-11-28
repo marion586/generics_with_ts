@@ -123,3 +123,150 @@ let idOne: Id<string>;
 
 let idTwo: Id<number>;
 // equal to let idTwo: NumberId;
+
+// infer type
+
+type flattenArrayType<T> = T extends Array<infer ArrayType> ? ArrayType : T;
+
+type foo = flattenArrayType<string[]>;
+// equal to type foo = string;
+
+type foo1 = flattenArrayType<number[]>;
+// equal to type foo = number;
+
+type foo2 = flattenArrayType<number>;
+// equal to type foo = number;
+
+// Mapped types
+
+interface Character1 {
+  playInFantasyMovie: () => void;
+  playInActionMovie: () => void;
+}
+
+type toFlags<Type> = {
+  [Property in keyof Type]: boolean;
+};
+
+type characterReatures = toFlags<Character1>;
+interface Character3 {
+  playInFantasyMovie: () => void;
+  playInActionMovie: () => void;
+}
+
+/*
+
+equal to 
+
+type characterFeatures = {
+  playInFantasyMovie: boolean;
+  playInActionMovie: boolean;
+}
+
+*/
+
+type mutable<Type> = {
+  -readonly [Property in keyof Type]: Type[Property];
+};
+
+type Character2 = {
+  readonly firstname: string;
+  readonly name: string;
+};
+
+type mutableCharacter = mutable<Character>;
+/*
+
+equal to
+
+type mutableCharacter = {
+  firstname: string;
+  name: string;
+}
+
+ */
+
+type mutable1<Type> = {
+  -readonly [Property in keyof Type]: Type[Property];
+};
+
+type CharacterReadonly = {
+  readonly firstname: string;
+  readonly name: string;
+};
+
+type mutableCharacter2 = mutable1<CharacterReadonly>;
+
+// type mutableCharacter2 = {
+//   firstname: string;
+//   name: string;
+// }
+
+//  */
+
+type optional<Type> = {
+  [Property in keyof Type]+?: Type[Property];
+};
+
+type Character8 = {
+  firstname: string;
+  name: string;
+};
+
+type mutableCharacter8 = optional<Character>;
+
+/* 
+
+equal to
+
+type mutableCharacter = {
+  firstname?: string;
+  name?: string;
+}
+
+*/
+
+type setters<Type> = {
+  [Property in keyof Type as `set${Capitalize<
+    string & Property
+  >}`]: () => Type[Property];
+};
+
+type Character9 = {
+  firstname: string;
+  name: string;
+};
+
+type character = setters<Character>;
+
+/*
+
+equal to
+
+type character = {
+  setFirstname: () => string;
+  setName: () => string;
+}
+
+*/
+
+type nameOnly<Type> = {
+  [Property in keyof Type as Exclude<Property, "firstname">]: Type[Property];
+};
+
+type Character11 = {
+  firstname: string;
+  name: string;
+};
+
+type character11 = nameOnly<Character>;
+
+/*
+
+equal to 
+
+type character = {
+  name: string;
+}
+
+*/
